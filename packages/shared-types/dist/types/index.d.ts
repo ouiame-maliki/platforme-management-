@@ -1,0 +1,16 @@
+import { z } from "zod";
+import { EmployeeSchema, CompanySchema, SiteSchema, DirectionSchema, DepartmentSchema, TeamSchema, JobDescriptionSchema, ObjectiveSchema, ObjectiveLevel, MissionSchema, MissionStatus, MissionCreatedBy, KpiDefinitionSchema, KpiValueSchema } from "../schemas";
+export type Employee = z.infer<typeof EmployeeSchema>;
+export type Company = z.infer<typeof CompanySchema>;
+export type Site = z.infer<typeof SiteSchema>;
+export type Direction = z.infer<typeof DirectionSchema>;
+export type Department = z.infer<typeof DepartmentSchema>;
+export type Team = z.infer<typeof TeamSchema>;
+export type JobDescription = z.infer<typeof JobDescriptionSchema>;
+export type Objective = z.infer<typeof ObjectiveSchema>;
+export type Mission = z.infer<typeof MissionSchema>;
+export type ObjectiveLevelType = z.infer<typeof ObjectiveLevel>;
+export type MissionStatusType = z.infer<typeof MissionStatus>;
+export type MissionCreatedByType = z.infer<typeof MissionCreatedBy>;
+export type KpiDefinition = z.infer<typeof KpiDefinitionSchema>;
+export type KpiValue = z.infer<typeof KpiValueSchema>;
