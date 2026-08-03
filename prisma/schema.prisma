@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Représente une entreprise cliente utilisant la plateforme
+model Company {
+  id             String          @id @default(cuid())
+  name           String
+  sector         String
+  plan           String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deletedAt      DateTime?
+  version        Int             @default(1)
+  directions     Direction[]
+  kpiDefinitions KpiDefinition[]
+  objectives     Objective[]
+  sites          Site[]
+}
+
+/// Site géographique appartenant à une entreprise
+model Site {
+  id        String    @id @default(cuid())
+  companyId String
+  name      String
+  country   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  version   Int       @default(1)
+  company   Company   @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
+}
+
+/// Direction fonctionnelle d'une entreprise
+model Direction {
+  id          String       @id @default(cuid())
+  companyId   String
+  name        String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  deletedAt   DateTime?
+  version     Int          @default(1)
+  departments Department[]
+  company     Company      @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
+}
+
+/// Département rattaché à une direction
+model Department {
+  id          String    @id @default(cuid())
+  directionId String
+  name        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  version     Int       @default(1)
+  direction   Direction @relation(fields: [directionId], references: [id])
+  teams       Team[]
+
+  @@index([directionId])
+}
+
+/// Équipe appartenant à un département
+model Team {
+  id           String     @id @default(cuid())
+  departmentId String
+  name         String
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+  version      Int        @default(1)
+  employees    Employee[]
+  missions     Mission[]
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  @@index([departmentId])
+}
+
+/// Employé appartenant à une équipe
+model Employee {
+  id           String     @id @default(cuid())
+  teamId       String
+  name         String
+  role         String
+  managerId    String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  deletedAt    DateTime?
+  version      Int        @default(1)
+  manager      Employee?  @relation("ManagerRelation", fields: [managerId], references: [id])
+  subordinates Employee[] @relation("ManagerRelation")
+  team         Team       @relation(fields: [teamId], references: [id])
+  missions     Mission[]  @relation("MissionResponsable")
+
+  @@index([teamId])
+  @@index([managerId])
+}
+
+/// Description standardisée d'un poste
+model JobDescription {
+  id              String    @id @default(cuid())
+  employeeRole    String
+  mission         String
+  objectifs       Json
+  responsabilites Json
+  taches          Json
+  competences     Json
+  kpi             Json
+  livrables       Json
+  frequence       String
+  risques         Json
+  procedures      Json
+  documents       String[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  deletedAt       DateTime?
+  version         Int       @default(1)
+}
+
+/// Objectif stratégique ou opérationnel de l'entreprise
+model Objective {
+  id        String      @id @default(cuid())
+  companyId String
+  parentId  String?
+  level     String
+  title     String
+  target    Json
+  status    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  deletedAt DateTime?
+  version   Int         @default(1)
+  missions  Mission[]
+  company   Company     @relation(fields: [companyId], references: [id])
+  parent    Objective?  @relation("ObjectiveHierarchy", fields: [parentId], references: [id])
+  children  Objective[] @relation("ObjectiveHierarchy")
+
+  @@index([companyId])
+  @@index([parentId])
+}
+
+/// Mission assignée à un employé ou une équipe
+model Mission {
+  id            String    @id @default(cuid())
+  objectiveId   String
+  responsableId String
+  teamId        String?
+  priorite      String
+  dependances   String[]
+  livrables     Json
+  checklist     Json
+  dateLimite    DateTime
+  kpi           Json
+  status        String
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+  version       Int       @default(1)
+  objective     Objective @relation(fields: [objectiveId], references: [id])
+  responsable   Employee  @relation("MissionResponsable", fields: [responsableId], references: [id])
+  team          Team?     @relation(fields: [teamId], references: [id])
+
+  @@index([objectiveId])
+  @@index([teamId])
+  @@index([responsableId])
+}
+
+/// Définition d'un indicateur de performance (KPI)
+model KpiDefinition {
+  id        String     @id @default(cuid())
+  companyId String
+  name      String
+  unit      String
+  target    Float
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  deletedAt DateTime?
+  version   Int        @default(1)
+  company   Company    @relation(fields: [companyId], references: [id])
+  kpiValues KpiValue[]
+
+  @@index([companyId])
+}
+
+/// Valeur mesurée d'un KPI à une date donnée
+model KpiValue {
+  id              String        @id @default(cuid())
+  kpiDefinitionId String
+  value           Float
+  recordedAt      DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+  version         Int           @default(1)
+  kpiDefinition   KpiDefinition @relation(fields: [kpiDefinitionId], references: [id])
+
+  @@index([kpiDefinitionId])
+}
