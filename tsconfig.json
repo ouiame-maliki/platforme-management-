@@ -5,10 +5,15 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["node"]
-   },
+    "types": ["node"],
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    "rootDir": "src",
+    "outDir": "dist"
+  },
   "include": [
-    "prisma/**/*.ts"
+    "src/**/*.ts",
   ]
 }
-
