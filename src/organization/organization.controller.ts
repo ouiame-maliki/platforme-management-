@@ -1,11 +1,12 @@
-import { Body, Controller, Post, Get, Query } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query, Param } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
-
+import { OrgchartService } from './orgchart.service';
 @Controller()
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
+    private readonly orgchartService: OrgchartService,
   ) {}
 
   @Post("directions")
@@ -88,4 +89,12 @@ export class OrganizationController {
     ) {
         return this.organizationService.findEmployees(query);
     }
+
+    @Get('companies/:id/orgchart')
+    getOrgchart(
+        @Param('id') id: string) {
+             return this.orgchartService.getOrgchart(id);
+    }
+
+    
 }
