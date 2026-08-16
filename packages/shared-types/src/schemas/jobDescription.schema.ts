@@ -5,7 +5,7 @@ export const JobDescriptionSchema = z.object({
     employeeRole: z.string(),
     mission: z.string(),
     objectifs: z.json(),
-    responsabilities: z.json(),
+    responsabilites: z.json(),
     taches: z.json(), 
     competences: z.json(),
     kpi: z.json(),
