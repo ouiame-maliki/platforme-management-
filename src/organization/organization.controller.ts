@@ -1,12 +1,14 @@
-import { Body, Controller, Post, Get, Query, Param } from '@nestjs/common';
+import { Body, Controller, Post, Get, Query, Param, Patch } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
 import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
 import { OrgchartService } from './orgchart.service';
+import { JobDescriptionService } from './jobDescription.service';
 @Controller()
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly orgchartService: OrgchartService,
+    private readonly jobDescriptionService: JobDescriptionService,
   ) {}
 
   @Post("directions")
@@ -96,5 +98,30 @@ export class OrganizationController {
              return this.orgchartService.getOrgchart(id);
     }
 
-    
+    @Post('job-descriptions')
+    createJobDescription(
+        @Body() body: unknown,
+    ) {
+        return this.jobDescriptionService.createJobDescription(body);
+    }
+
+    @Get("job-descriptions/:employeeId")
+    getJobDescription(
+       @Param("employeeId") employeeId: string,
+       @Query("companyId") companyId: string,
+    ) {
+        return this.jobDescriptionService.getJobDescription(
+            employeeId,
+            companyId
+        );
+    }
+
+    @Patch("job-descriptions/:id")
+    updateJobDescription(
+      @Param("id") id: string,
+      @Body() body: unknown,
+    ) {
+       return this.jobDescriptionService.updateJobDescription(id, body);
+    }
+
 }
