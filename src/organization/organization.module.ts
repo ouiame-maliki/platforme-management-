@@ -4,10 +4,11 @@ import { OrganizationService } from './organization.service';
 import { PrismaModule } from "../prisma/prisma.module";
 import { OrgchartService } from './orgchart.service';
 import { JobDescriptionService } from './jobDescription.service';
+import { ObjectiveService } from './objective.service';
 
 @Module({
     imports: [PrismaModule],
     controllers: [OrganizationController],
-    providers: [OrganizationService, OrgchartService, JobDescriptionService],
+    providers: [OrganizationService, OrgchartService, JobDescriptionService, ObjectiveService],
 })
 export class OrganizationModule {}

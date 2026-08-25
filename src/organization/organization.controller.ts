@@ -3,12 +3,15 @@ import { OrganizationService } from './organization.service';
 import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
 import { OrgchartService } from './orgchart.service';
 import { JobDescriptionService } from './jobDescription.service';
+import { ObjectiveService } from './objective.service';
+
 @Controller()
 export class OrganizationController {
   constructor(
     private readonly organizationService: OrganizationService,
     private readonly orgchartService: OrgchartService,
     private readonly jobDescriptionService: JobDescriptionService,
+    private readonly objectiveService: ObjectiveService,
   ) {}
 
   @Post("directions")
@@ -124,4 +127,33 @@ export class OrganizationController {
        return this.jobDescriptionService.updateJobDescription(id, body);
     }
 
+    @Post("objectives")
+    createObjective(
+      @Body() body: unknown,
+    ) {
+        return this.objectiveService.createObjective(body);
+    }
+
+    @Get("objectives/tree/:strategicId")
+    getObjectiveTree(
+       @Param("strategicId") strategicId: string,
+   ) {
+      return this.objectiveService.getObjectiveTree(strategicId);
+   }
+
+    @Patch("objectives/:id/status")
+    updateObjectiveStatus(
+     @Param("id") id: string,
+     @Body() body: unknown,
+    ) {
+    return this.objectiveService.updateObjectiveStatus(id, body);
+    }
+
+    @Get("objectives")
+    getObjectives(
+      @Query("companyId") companyId?: string,
+      @Query("level") level?: string,
+    ) {
+        return this.objectiveService.getObjectives(companyId, level);
+    }
 }
