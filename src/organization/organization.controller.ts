@@ -4,6 +4,7 @@ import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@
 import { OrgchartService } from './orgchart.service';
 import { JobDescriptionService } from './jobDescription.service';
 import { ObjectiveService } from './objective.service';
+import { MissionService } from './mission.service';
 
 @Controller()
 export class OrganizationController {
@@ -12,6 +13,7 @@ export class OrganizationController {
     private readonly orgchartService: OrgchartService,
     private readonly jobDescriptionService: JobDescriptionService,
     private readonly objectiveService: ObjectiveService,
+    private readonly missionService: MissionService,
   ) {}
 
   @Post("directions")
@@ -156,4 +158,43 @@ export class OrganizationController {
     ) {
         return this.objectiveService.getObjectives(companyId, level);
     }
+
+    @Post("missions")
+    createMission(
+        @Body() body: unknown,
+    ){
+        return this.missionService.createMission(body);
+    }
+
+    @Get("missions")
+    getMissions(
+      @Query("teamId") teamId?: string,
+      @Query("status") status?: string,
+      @Query("priorite") priorite?: string,
+      @Query("limit") limit?: string,
+      @Query("offset") offset?: string,
+    ) {
+      return this.missionService.getMissions(
+         teamId,
+         status,
+         priorite,
+         limit ? Number(limit) : 50,
+         offset ? Number(offset) : 0,
+       );
+    }
+
+    @Patch("missions/:id/status")
+    updateMissionStatus(
+     @Param("id") id: string,
+     @Body() body: unknown,
+    ) {
+       return this.missionService.updateMissionStatus(id, body);
+    }
+
+    @Get("missions/:id/details")
+    getMissionDetails(
+        @Param("id") id: string) {
+            return this.missionService.getMissionDetails(id);
+        }
 }
+    
