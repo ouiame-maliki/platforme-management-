@@ -104,8 +104,14 @@ declare const _default: {
         id: import("zod").ZodCUID;
         companyId: import("zod").ZodString;
         name: import("zod").ZodString;
-        unit: import("zod").ZodString;
+        unit: import("zod").ZodEnum<{
+            montant: "montant";
+            nombre: "nombre";
+            pourcent: "pourcent";
+            temps: "temps";
+        }>;
         target: import("zod").ZodNumber;
+        description: import("zod").ZodOptional<import("zod").ZodString>;
     }, import("zod/v4/core").$strip>;
     KpiValueSchema: import("zod").ZodObject<{
         id: import("zod").ZodCUID;

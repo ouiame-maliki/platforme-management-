@@ -5,7 +5,7 @@ import { OrgchartService } from './orgchart.service';
 import { JobDescriptionService } from './jobDescription.service';
 import { ObjectiveService } from './objective.service';
 import { MissionService } from './mission.service';
-
+import { KpiService } from './kpi.service';
 @Controller()
 export class OrganizationController {
   constructor(
@@ -14,6 +14,7 @@ export class OrganizationController {
     private readonly jobDescriptionService: JobDescriptionService,
     private readonly objectiveService: ObjectiveService,
     private readonly missionService: MissionService,
+    private readonly kpiService: KpiService,
   ) {}
 
   @Post("directions")
@@ -195,6 +196,55 @@ export class OrganizationController {
     getMissionDetails(
         @Param("id") id: string) {
             return this.missionService.getMissionDetails(id);
-        }
+    }
+
+    @Post("kpi/define")
+    createKpiDefinition( 
+        @Body() body: unknown,
+    ) {
+        return this.kpiService.createKpiDefinition(body);
+    }
+
+    @Get("kpi")
+    getKpi(
+        @Query("companyId") companyId: string, 
+    ){
+        return this.kpiService.getKpi(companyId);
+    }
+
+    @Post("kpi/:kpiDefinitionId/values")
+    createKpiValue(
+      @Param("kpiDefinitionId") kpiDefinitionId: string,
+      @Body() body: unknown,
+    ) {
+      return this.kpiService.createKpiValue(kpiDefinitionId, body);
+    }
+
+    @Get("kpi/:id/history")
+    getKpiHistory(
+       @Param("id") id: string,
+       @Query("startDate") startDate?: string,
+       @Query("endDate") endDate?: string,
+       @Query("granularity") granularity?: string,
+       @Query("limit") limit?: string,
+       @Query("offset") offset?: string,
+    ) {
+       return this.kpiService.getKpiHistory(
+        id,
+        startDate,
+        endDate,
+        granularity,
+        limit ? Number(limit) : undefined,
+        offset ? Number(offset) : undefined,
+       );
+    }
+
+    @Get("kpi/:id/stats")
+    getKpiStats(
+      @Param("id") id: string,
+
+    ) {
+       return this.kpiService.getKpiStats(id);
+    }
 }
     

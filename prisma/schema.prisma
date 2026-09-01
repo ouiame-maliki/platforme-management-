@@ -180,6 +180,7 @@ model KpiDefinition {
   name      String
   unit      String
   target    Float
+  description String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   deletedAt DateTime?
@@ -188,6 +189,7 @@ model KpiDefinition {
   kpiValues KpiValue[]
 
   @@index([companyId])
+  @@unique([companyId, name])
 }
 
 /// Valeur mesurée d'un KPI à une date donnée
@@ -196,6 +198,7 @@ model KpiValue {
   kpiDefinitionId String
   value           Float
   recordedAt      DateTime      @default(now())
+  context         Json?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
   deletedAt       DateTime?
