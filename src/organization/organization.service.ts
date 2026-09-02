@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException, BadRequestException} from '@nestjs/common';
 import { PrismaService } from "../prisma/prisma.service";
 import { z } from "zod";
-import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
+import { CompanySchema, DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
 
 type CreateDirectionDto = Omit<z.infer<typeof DirectionSchema>, "id">;
 type CreateDepartmentDto = Omit<z.infer<typeof DepartmentSchema>, "id">;
 type CreateTeamDto = Omit<z.infer<typeof TeamSchema>, "id">;
 type CreateEmployeeDto = Omit<z.infer<typeof EmployeeSchema>, "id">;
+type CreateCompanyDto = Omit<z.infer<typeof CompanySchema>, "id">;
 
 @Injectable()
 export class OrganizationService {
@@ -29,6 +30,11 @@ export class OrganizationService {
   return { take, skip };
 }
   
+  async createCompany(data: CreateCompanyDto) {
+  return this.prisma.company.create({
+    data,
+  });
+}
   async createDirection(data: CreateDirectionDto) {
     const company = await this.prisma.company.findUnique({
         where: {

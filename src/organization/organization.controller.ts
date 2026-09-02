@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Get, Query, Param, Patch } from '@nestjs/common';
 import { OrganizationService } from './organization.service';
-import { DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
+import { CompanySchema, DirectionSchema, DepartmentSchema, TeamSchema, EmployeeSchema } from "@virtual-ai-manager/shared-types";
 import { OrgchartService } from './orgchart.service';
 import { JobDescriptionService } from './jobDescription.service';
 import { ObjectiveService } from './objective.service';
@@ -17,6 +17,17 @@ export class OrganizationController {
     private readonly kpiService: KpiService,
   ) {}
 
+
+  @Post("companies")
+  createCompany(
+     @Body() body: unknown,
+  ) {
+      const data = CompanySchema
+       .omit({ id: true })
+          .parse(body);
+
+     return this.organizationService.createCompany(data);
+  }
   @Post("directions")
   createDirection(
     @Body() body: unknown,
