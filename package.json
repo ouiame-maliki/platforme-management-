@@ -1,5 +1,7 @@
 {
     "scripts": {
+        "start": "nest start",
+        "start:dev": "nest start --watch",
         "test": "jest",
         "test:watch": "jest --watch",
         "test:cov": "jest --coverage"
@@ -19,12 +21,14 @@
         "@nestjs/common": "^11.1.28",
         "@nestjs/core": "^11.1.28",
         "@nestjs/platform-express": "^11.1.28",
+        "@nestjs/swagger": "^11.4.7",
         "@prisma/adapter-pg": "^7.9.1",
         "@prisma/client": "^7.9.1",
         "@virtual-ai-manager/shared-types": "file:packages/shared-types",
         "dotenv": "^17.4.2",
         "pg": "^8.22.0",
         "reflect-metadata": "^0.2.2",
-        "rxjs": "^7.8.2"
+        "rxjs": "^7.8.2",
+        "swagger-ui-express": "^5.0.1"
     }
 }
