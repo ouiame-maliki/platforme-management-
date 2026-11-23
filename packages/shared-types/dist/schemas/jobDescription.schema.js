@@ -7,7 +7,7 @@ exports.JobDescriptionSchema = zod_1.z.object({
     employeeRole: zod_1.z.string(),
     mission: zod_1.z.string(),
     objectifs: zod_1.z.json(),
-    responsabilities: zod_1.z.json(),
+    responsabilites: zod_1.z.json(),
     taches: zod_1.z.json(),
     competences: zod_1.z.json(),
     kpi: zod_1.z.json(),

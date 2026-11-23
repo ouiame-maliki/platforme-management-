@@ -4,7 +4,7 @@ export declare const JobDescriptionSchema: z.ZodObject<{
     employeeRole: z.ZodString;
     mission: z.ZodString;
     objectifs: z.ZodJSONSchema;
-    responsabilities: z.ZodJSONSchema;
+    responsabilites: z.ZodJSONSchema;
     taches: z.ZodJSONSchema;
     competences: z.ZodJSONSchema;
     kpi: z.ZodJSONSchema;

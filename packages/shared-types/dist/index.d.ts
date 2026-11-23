@@ -40,7 +40,7 @@ declare const _default: {
         employeeRole: import("zod").ZodString;
         mission: import("zod").ZodString;
         objectifs: import("zod").ZodJSONSchema;
-        responsabilities: import("zod").ZodJSONSchema;
+        responsabilites: import("zod").ZodJSONSchema;
         taches: import("zod").ZodJSONSchema;
         competences: import("zod").ZodJSONSchema;
         kpi: import("zod").ZodJSONSchema;

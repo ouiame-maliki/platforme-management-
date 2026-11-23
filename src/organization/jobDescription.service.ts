@@ -26,7 +26,7 @@ const CreateJobDescriptionSchema = JobDescriptionSchema
     procedures: z.array(z.json()),
   });
 
-  const UpdateJobDescriptionSchema = CreateJobDescriptionSchema.partial().extend({
+const UpdateJobDescriptionSchema = CreateJobDescriptionSchema.partial().extend({
     version: z.number().int().positive(),
   });
 
@@ -40,11 +40,9 @@ export class JobDescriptionService {
     async createJobDescription(body: unknown) {
         const data = CreateJobDescriptionSchema.parse(body);
 
-        const prismaData: Prisma.JobDescriptionCreateInput = {
-           ...data,
-        };
+        
         return this.prisma.jobDescription.create({
-         data: prismaData,
+         data,
         });
     }
 
@@ -88,10 +86,8 @@ export class JobDescriptionService {
     }
 
     async updateJobDescription(id: string, body: unknown) {
-    const data: UpdateJobDescriptionDto =
-      UpdateJobDescriptionSchema.parse(body);
-
-    const current = await this.prisma.jobDescription.findUnique({
+     const data: UpdateJobDescriptionDto = UpdateJobDescriptionSchema.parse(body);
+     const current = await this.prisma.jobDescription.findUnique({
         where: {
           id,
         },
